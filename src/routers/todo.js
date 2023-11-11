@@ -21,7 +21,16 @@ todoRouter.get('/todo', (req, res) => {
 });
 
 todoRouter.post('/todo', (req, res) => {
-  
+  const { text, fecha, done } = req.body;
+  const newId = todos.length + 1;
+  const newTodo = {
+    id: newId,
+    text: text,
+    fecha: fecha,
+    done: done,
+  };
+  todos.push(newTodo);
+  res.status(201).json(todos);
   //crear un nuevo objeto con estructura {id, text, fecha, done} con los datos que vienen en el BODY de la Request y meterlos dentro de el array.
   //el nuevo objeto debe tener como id un numero mas que el numero actual de elementos guardados en el array.
 
@@ -59,21 +68,36 @@ todoRouter.get('/todo/:id', (req, res) => {
 
 // MISSING '/todo/:id' PATCH
 
-todoRouter.patch('/todo/:id',  (req, res) => {
-  //recogemos el valor de la variable del path llamada "id" y lo transformarlo a un numero (todos nuestros ids son numericos).
-  //cualquier valor que recogemos de req.params será siempre un String. Por eso lo debemos convertir a numero.
-  
-  //buscar dentro del array "todos" aquel elemento que coincide con el id recibido por parametro de la ruta en la request.
-  //si existe, lo ACTUALIZAMOS con los datos del BODY de la Request y lo devolvemos como formato JSON y codigo de status 200.
-  
-  //Si no hemos econtrado un TODO o no nos han pasado un id en la ruta, devolvemos un 404.
-  
+todoRouter.patch('/todo/:id', (req, res) => {
+  const todoId = parseInt(req.params.id);
+  const todoIndex = todos.findIndex((todo) => todo.id === todoId);
+  if (todoIndex !== -1) {
+    todos[todoIndex] = { ...todos[todoIndex], ...req.body };
+    res.json(todos);
+  } else {
+    res.status(404).send();
+  }
 });
+
+//recogemos el valor de la variable del path llamada "id" y lo transformarlo a un numero (todos nuestros ids son numericos).
+//cualquier valor que recogemos de req.params será siempre un String. Por eso lo debemos convertir a numero.
+
+//buscar dentro del array "todos" aquel elemento que coincide con el id recibido por parametro de la ruta en la request.
+//si existe, lo ACTUALIZAMOS con los datos del BODY de la Request y lo devolvemos como formato JSON y codigo de status 200.
+
+//Si no hemos econtrado un TODO o no nos han pasado un id en la ruta, devolvemos un 404.
 
 // MISSING '/todo/:id' DELETE
 
 
 todoRouter.delete('/todo/:id',  (req, res) => {
+  const todoIndex = todos.findIndex((todo) => {
+    return todo.id === parseFloat(req.params.id)
+  });
+  if (todoIndex === -1) return res.status(404).send();
+  todos.splice(todoIndex, 1);
+  return res.json(todos);
+});
   //recogemos el valor de la variable del path llamada "id" y lo transformarlo a un numero (todos nuestros ids son numericos).
   //cualquier valor que recogemos de req.params será siempre un String. Por eso lo debemos convertir a numero.
   
@@ -81,8 +105,6 @@ todoRouter.delete('/todo/:id',  (req, res) => {
   //si existe, lo BORRAMOS y devolvemos un codigo de status 204.
   
   //Si no hemos econtrado un TODO o no nos han pasado un id en la ruta, devolvemos un 404.
-  
-});
 
 
 //exportamos el router para poder 'usarlo' en nuestra app.
