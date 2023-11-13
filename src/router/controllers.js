@@ -1,27 +1,27 @@
-const todoData = require("../data/todo");
+const { todoData } = require("../data/todo");
 
 const getAll = (req, res) => {
     res.json(todoData);
 };
 
 const getById = (req, res) => {
-    const body = req.body;
-    const newTodo = {
-      id: todoData.length + 1,
-      text: body.text,
-      fecha: body.fecha,
-      done: body.done,
-    };
-    todoData.push(newTodo);
-    res.status(201).json(todoData);
+  const element = todoData.find((todo) => {
+    return todo.id === parseInt(req.params.id);
+  });
+  if (!element) return res.status(404).send();
+  res.json(element);
 };
 
 const create = (req, res) => {
-    const element = todoData.find((todo) => {
-      return todo.id === parseInt(req.params.id);
-    });
-    if (!element) return res.status(404).send();
-    res.json(element);
+  const body = req.body;
+  const newTodo = {
+    id: todoData.length + 1,
+    text: body.text,
+    fecha: body.fecha,
+    done: body.done,
+  };
+  todoData.push(newTodo);
+  res.status(201).json(todoData);
 };
 
 const update = (req, res) => {
@@ -45,9 +45,9 @@ const remove = (req, res) => {
 };
 
 module.exports = {
-    getAll,
-    getById,
-    create,
-    update,
-    remove
+  getAll,
+  getById,
+  create,
+  update,
+  remove
 };
