@@ -1,15 +1,11 @@
 const express = require('express');
 const app = express();
-const routes = require('./routers/routes');
-
-
+const router = require('./router');
 
 app.use(express.json());
 
-app.use(routes);
+app.use(router);
 
-app.listen(3000, () => {
-    console.log("Server is up and running in port 3000");
+app.listen(3001, () => {
+    console.log("Server is up and running in port 3001");
 });
-
-

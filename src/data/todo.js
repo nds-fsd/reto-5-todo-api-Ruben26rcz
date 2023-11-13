@@ -1,4 +1,4 @@
-const todos = [
+const todoData = [
   {
     id: 0,
     text: "Hacer la cama",
@@ -12,3 +12,7 @@ const todos = [
     done: true
   }
 ];
+
+module.exports = {
+  todoData
+};

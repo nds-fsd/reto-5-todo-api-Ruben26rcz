@@ -1,24 +1,23 @@
-const todos = require("./data");
+const todoData = require("../data/todo");
 
 const getAll = (req, res) => {
-    res.json(todos);
+    res.json(todoData);
 };
 
 const getById = (req, res) => {
-    const { text, fecha, done } = req.body;
-    const newId = todos.length + 1;
+    const body = req.body;
     const newTodo = {
-      id: newId,
-      text: text,
-      fecha: fecha,
-      done: done,
+      id: todoData.length + 1,
+      text: body.text,
+      fecha: body.fecha,
+      done: body.done,
     };
-    todos.push(newTodo);
-    res.status(201).json(todos);
+    todoData.push(newTodo);
+    res.status(201).json(todoData);
 };
 
 const create = (req, res) => {
-    const element = todos.find((todo) => {
+    const element = todoData.find((todo) => {
       return todo.id === parseInt(req.params.id);
     });
     if (!element) return res.status(404).send();
@@ -27,22 +26,22 @@ const create = (req, res) => {
 
 const update = (req, res) => {
     const todoId = parseInt(req.params.id);
-    const todoIndex = todos.findIndex((todo) => todo.id === todoId);
+    const todoIndex = todoData.findIndex((todo) => todo.id === todoId);
     if (todoIndex !== -1) {
-      todos[todoIndex] = { ...todos[todoIndex], ...req.body };
-      res.json(todos);
+      todoData[todoIndex] = { ...todoData[todoIndex], ...req.body };
+      res.json(todoData);
     } else {
       res.status(404).send();
     }
 };
 
 const remove = (req, res) => {
-    const todoIndex = todos.findIndex((todo) => {
+    const todoIndex = todoData.findIndex((todo) => {
       return todo.id === parseInt(req.params.id)
     });
     if (todoIndex === -1) return res.status(404).send();
-    todos.splice(todoIndex, 1);
-    return res.json(todos);
+    todoData.splice(todoIndex, 1);
+    return res.json(todoData);
 };
 
 module.exports = {
