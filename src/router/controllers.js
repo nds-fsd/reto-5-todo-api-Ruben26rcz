@@ -13,11 +13,12 @@ const getById = (req, res) => {
 };
 
 const create = (req, res) => {
-  const body = req.body;
+  const {body} = req;
+  const maxId = Math.max(...todoData.map(todo => todo.id));
   const newTodo = {
-    id: todoData.length + 1,
+    id: maxId + 1,
     text: body.text,
-    fecha: body.fecha,
+    fecha: new Date(body.fecha),
     done: body.done,
   };
   todoData.push(newTodo);
