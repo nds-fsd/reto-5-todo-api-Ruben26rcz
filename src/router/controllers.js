@@ -18,7 +18,7 @@ const create = (req, res) => {
   const newTodo = {
     id: maxId + 1,
     text: body.text,
-    fecha: new Date(body.fecha),
+    fecha: new Date(body.fecha).toLocaleString("en-GB"),
     done: body.done,
   };
   todoData.push(newTodo);
