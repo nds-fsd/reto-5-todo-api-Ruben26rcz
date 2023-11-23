@@ -1,5 +1,5 @@
 const { todoData } = require("../data/todo");
-
+let lastTodoId = todoData.length > 0 ? Math.max(...todoData.map(todo => todo.id)) : 0;
 const getAll = (req, res) => {
     res.json(todoData);
 };
@@ -14,9 +14,8 @@ const getById = (req, res) => {
 
 const create = (req, res) => {
   const {body} = req;
-  const maxId = Math.max(...todoData.map(todo => todo.id));
   const newTodo = {
-    id: maxId + 1,
+    id: ++lastTodoId,
     text: body.text,
     fecha: new Date(body.fecha).toLocaleString("en-GB"),
     done: body.done,
