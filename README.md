@@ -1,6 +1,7 @@
 # To do App (Backend Repo)
 
 This is the backend repo of the To Do app project. Is done following the structure of a REST API.
+
 This project was an exercise proposed by the teachers at Nuclio School during the Full Stack Developer Bootcamp.
 
 This To Do App enables the user to create, complete and delete to do tasks.
